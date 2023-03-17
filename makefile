@@ -1,6 +1,4 @@
-all:	main.cpp linalg.h linalg.cpp functions.h functions.cpp
-	g++ -c functions.cpp
-	g++ -c linalg.cpp
+all:	main.cpp linalg.o functions.o
 	g++ -o raytracer main.cpp linalg.o functions.o -lSDL2
 
 debug:	main.cpp linalg.h linalg.cpp functions.h functions.cpp
