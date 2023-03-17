@@ -1,3 +1,5 @@
+#include "linalg.h"
+
 struct app_data {
     SDL_Window *window;
     SDL_Renderer *renderer;

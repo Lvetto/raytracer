@@ -1,23 +1,20 @@
-DEBUG_FLAGS := -O0 -g
+all:	main.cpp linalg.h linalg.cpp functions.h functions.cpp
+	g++ -c functions.cpp
+	g++ -c linalg.cpp
+	g++ -o raytracer main.cpp linalg.o functions.o -lSDL2
 
-LIBS := -lSDL2
+debug:	main.cpp linalg.h linalg.cpp functions.h functions.cpp
+	g++ -c functions.cpp -O0 -g
+	g++ -c linalg.cpp -O0 -g
+	g++ -o deb_raytracer main.cpp linalg.o functions.o -lSDL2 -O0 -g
 
-sdl_% : sdl_%.cpp
-	g++ -c $@.cpp $(LIBS)
+run:	all
+	./raytracer
 
-comp: sdl_main.o sdl_functions.o sdl_linalg.o
-	g++ -o prog sdl_main.o sdl_functions.o sdl_linalg.o $(LIBS)
-
-debug: sdl_main.cpp sdl_functions.cpp sdl_linalg.cpp
-	g++ -c sdl_functions.cpp $(LIBS) $(DEBUG_FLAGS)
-	g++ -c sdl_main.cpp $(LIBS) $(DEBUG_FLAGS)
-	g++ -o prog sdl_main.o sdl_functions.o sdl_linalg.o $(LIBS) $(DEBUG_FLAGS)
-
-run: comp
-	./prog
-
-drun: debug
-	gdbtui ./prog
+drun:	debug
+	./deb_raytracer
 
 clean:
-	rm -f prog; rm -f *.o
+	rm -f *.o
+	rm -f raytracer
+	rm -f deb_raytracer

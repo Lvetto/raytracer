@@ -1,8 +1,7 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <cmath>
-#include "sdl_functions.h"
-#include "linalg.h"
+#include "functions.h"
 
 vector collide(ray a, surface b) {
     double ma[] = {
