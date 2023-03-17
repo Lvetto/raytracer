@@ -53,9 +53,3 @@ class matrix {
     double *coeffs;
     int size;
 };
-
-vector cross_prod(vector a, vector b);
-
-matrix rot(vector axis, double angle);
-
-double angle(vector a, vector b);

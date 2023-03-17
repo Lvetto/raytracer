@@ -179,37 +179,3 @@ void matrix::print() {
     }
     printf("\n");
 }
-
-vector cross_prod(vector a, vector b) {
-    double t[] = {
-        a[1]*b[2] - a[2]*b[1],
-        a[2]*b[0] - a[0]*b[2],
-        a[0]*b[1] - a[1]*b[0]
-    };
-    return vector(3, t);
-}
-
-matrix rot(vector axis, double angle) {
-    // https://www.youmath.it/domande-a-risposte/view/6230-rotazione.html
-    if (axis.norm() == 0) {
-        double a[] = {
-            1, 0, 0,
-            0, 1, 0,
-            0, 0, 1
-        };
-        return matrix(3, a);
-    }
-
-    double s = 1. / sqrt(axis * axis);
-    axis = axis * s;
-    double a[] = {
-        pow(axis[0],2)+(1-pow(axis[0],2))*cos(angle), (1-cos(angle))*axis[0]*axis[1]-sin(angle)*axis[2], (1-cos(angle))*axis[0]*axis[2]+sin(angle)*axis[1],
-        (1-cos(angle))*axis[0]*axis[1]+sin(angle)*axis[3], pow(axis[1],2)+(1-pow(axis[1],2))*cos(angle), (1-cos(angle))*axis[1]*axis[2]-sin(angle)*axis[0],
-        (1-cos(angle))*axis[0]*axis[2]-sin(angle)*axis[1], (1-cos(angle))*axis[1]*axis[2]+sin(angle)*axis[0], pow(axis[2],2)+(1-pow(axis[2],2))*cos(angle)
-    };
-    return matrix(3, a);
-}
-
-double angle(vector a, vector b) {
-    return acos((a*b)/(a.norm() * b.norm()));
-}
