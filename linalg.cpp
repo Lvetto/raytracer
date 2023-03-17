@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <SDL2/SDL.h>
-#include "sdl_functions.h"
+#include "linalg.h"
 
 vector::vector (int s) {
         size = s;

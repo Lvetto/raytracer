@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <SDL2/SDL.h>
+#include "linalg.h"
 #include "sdl_functions.h"
 
 void init(app_data *app, int width, int height) {
