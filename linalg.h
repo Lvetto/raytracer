@@ -7,26 +7,26 @@ class vector {
 
     vector(int size, double *c);
 
-    vector *operator=(const vector b);
+    vector *operator=(const vector b);  // assignement operator
 
-    vector *operator=(const double b[]);
+    vector *operator=(const double b[]);    // assignement to array of doubles
 
-    vector operator+(const vector &b);
+    vector operator+(const vector &b);  // vector addition
 
-    vector operator*(const double a);
+    vector operator*(const double a);   // product by scalar
 
-    double operator*(const vector &b);
+    double operator*(const vector &b);  // scalar product
 
-    double operator[](int i);
+    double operator[](int i);   // subscription operator
 
-    double *operator[](int i) const;
+    double *operator[](int i) const;    // assigne singole component
 
-    void print();
+    void print();   // print components
 
-    double norm();
+    double norm();  // norm or modulus
 
-    double *comps;
-    int size;
+    double *comps;  // components array
+    int size;   // number of components
 };
 
 class matrix {
@@ -36,26 +36,26 @@ class matrix {
 
     matrix (int size, double *c);
 
-    vector operator*(vector a);
+    vector operator*(vector a); // vector-matrix product
 
-    double cof(int i, int j);
+    double cof(int i, int j);   // compute algebric cofactor
 
-    double det();
+    double det();   // compute determinant
 
-    matrix transpose();
+    matrix transpose(); // compute transposed matrix
 
-    matrix* operator=(const matrix m);
+    matrix* operator=(const matrix m);  // assignement operator
 
-    matrix inverse();
+    matrix inverse();   // compute inverse matrix
 
-    void print();
+    void print();   // print coefficients
 
-    double *coeffs;
-    int size;
+    double *coeffs; // coefficients array
+    int size;   // size of the matrix (number of coefficients = size * size)
 };
 
-vector cross_prod(vector a, vector b);
+vector cross_prod(vector a, vector b); // compute cross product of two vectors
 
-matrix rot(vector axis, double angle);
+matrix rot(vector axis, double angle);  // compute rotation matrix given angle and an axis
 
-double angle(vector a, vector b);
+double angle(vector a, vector b);   // compute angle between vectors
