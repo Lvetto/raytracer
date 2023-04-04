@@ -79,7 +79,7 @@ int main() {
         int delay = 1000/FPS - (t1-t0);
         SDL_RenderPresent(app.renderer);
         if (delay > 0) SDL_Delay(delay);
-
+        
         //break; // debug
     }
 

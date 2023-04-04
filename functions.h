@@ -35,3 +35,5 @@ class surface {
 
     vector m_pos, m_v1, m_v2;   // base position and characteristic vectors
 };
+
+vector intersect(ray a, ray b); // compute intersection of 2 rays (rays must be coplanar!)

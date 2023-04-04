@@ -78,3 +78,13 @@ vector surface::operator()(double a, double b) {
     return m_pos + m_v1 * a + m_v2 * b;
 }
 
+vector intersect(ray a, ray b) {
+    vector v3 = cross_prod(a.m_vers, b.m_vers);
+    double ma[] = {
+        a.m_vers[0], -b.m_vers[0], v3[0],
+        a.m_vers[1], -b.m_vers[1], v3[1],
+        a.m_vers[2], -b.m_vers[2], v3[2]
+    };
+    matrix m(3, ma);
+    return m.inverse() * (b.m_pos + a.m_pos * -1 + v3);
+}
