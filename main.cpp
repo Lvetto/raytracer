@@ -13,14 +13,24 @@ vector collide(ray a, surface b) {  // compute ray-surfafe intersection (coordin
     };
     matrix m(3, ma);
 
-    if (m.det() == 0)
+    if (m.det() == 0)   // matrix is singular --> surface isn't valid or is parallel to ray
         return 0;
 
     m = m.inverse();
     vector t(3);
-    t = m * (b.m_pos + (a.m_pos * -1));
+    t = m * (b.m_pos + (a.m_pos * -1)); // solve linear system (ray coord, surf coord 1, surf coord 2)
 
-    return t;
+    // check if point is in triangle
+    vector p = a(t[0]);
+    vector p0 = b.m_pos;
+    vector r = p + p0 * -1;
+    vector v3 = b.m_v1 + b.m_v2 * -1;
+    vector p1 = intersect(ray(p, r), ray(p0 + b.m_v2, v3)); // cast a ray passing for the intersection of surf.v1 and surf.v2. find the intersection with <v3>
+    double l_coord = (p1 + p * -1)[0] / r[0];   // go from global coordinate to local (with respect to <r>)
+    if (l_coord > 0)    // if the coordinate is positive the point is in the triangle
+        return a(t[0]); // local coord to global
+    else
+        return 0;
 }
 
 class camera {

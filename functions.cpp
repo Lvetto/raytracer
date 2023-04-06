@@ -86,5 +86,5 @@ vector intersect(ray a, ray b) {
         a.m_vers[2], -b.m_vers[2], v3[2]
     };
     matrix m(3, ma);
-    return m.inverse() * (b.m_pos + a.m_pos * -1 + v3);
+    return a((m.inverse() * (b.m_pos + a.m_pos * -1 + v3))[0]);
 }
