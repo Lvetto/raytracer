@@ -1,3 +1,4 @@
 *.o
 raytracer
 deb_raytracer
+.vscode
