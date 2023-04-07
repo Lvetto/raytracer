@@ -56,6 +56,8 @@ class camera {
 
     SDL_Surface render(surface* surf_arr, int surf_count, int max_bounces, int* res) {
 
+        SDL_Surface* output = SDL_CreateRGBSurfaceWithFormat(0, res[0], res[1], 4, SDL_PIXELFORMAT_RGBA32);
+
         for (int ix=0; ix<res[0]; ix++) {   // loop trough columns
             for (int iy=0; iy<res[1]; iy++) {   // loop trough rows
                 vector pix_pos = m_pos + m_dptof +  m_width * ((m_width.norm() / res[0]) * ix - 0.5) + m_height * ((m_height.norm() / res[1]) * iy - 0.5);
@@ -84,6 +86,12 @@ class camera {
 
                     vector new_pos = r(min_dist);   // the new ray starts at the (first) collision point'
 
+                    if (surf_arr[bounce_ind].m_is_light) {
+                        // write pixel to surface and break
+                        write_pixel(output, ix, iy, 100, 100, 100, 100);
+                        break;
+                    }
+
                     // compute new ray direction
                     vector normal = cross_prod(surf_arr[bounce_ind].m_v1, surf_arr[bounce_ind].m_v2);   // compute surface normal
                     normal = normal * (1/normal.norm());    // normalization
@@ -96,9 +104,6 @@ class camera {
                     // update ray r with the new ray info
                     r.m_vers = new_vers;
                     r.m_pos = new_pos;
-
-                    // There is no exit condition for hitting a light source!!
-
                 }
 
 
@@ -123,8 +128,8 @@ int main() {
         event_handle();
 
         Uint32 t1 = SDL_GetTicks();
-        int delay = 1000/FPS - (t1-t0);
         SDL_RenderPresent(app.renderer);
+        int delay = 1000/FPS - (t1-t0);
         if (delay > 0) SDL_Delay(delay);
         
         //break; // debug

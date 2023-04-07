@@ -29,11 +29,12 @@ class ray {
 class surface {
     public:
 
-    surface(vector p, vector v1, vector v2);
+    surface(vector p, vector v1, vector v2, bool is_light=false);
 
     vector operator()(double a, double b);
 
     vector m_pos, m_v1, m_v2;   // base position and characteristic vectors
+    bool m_is_light;
 };
 
 vector intersect(ray a, ray b); // compute intersection of 2 rays (rays must be coplanar!)

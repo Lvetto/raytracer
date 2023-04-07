@@ -68,10 +68,11 @@ vector ray::operator()(double t) {
         return m_pos + m_vers * t;
     }
 
-surface::surface(vector p, vector v1, vector v2) : m_pos(3), m_v1(3), m_v2(3) {
+surface::surface(vector p, vector v1, vector v2, bool is_light=false) : m_pos(3), m_v1(3), m_v2(3) {
     m_pos = p;
     m_v1 = v1;
     m_v2 = v2;
+    m_is_light = is_light;
 }
 
 vector surface::operator()(double a, double b) {
