@@ -181,6 +181,7 @@ void matrix::print() {
 }
 
 vector cross_prod(vector a, vector b) {
+    // check the formula!!!
     double t[] = {
         a[1]*b[2] - a[2]*b[1],
         a[2]*b[0] - a[0]*b[2],
@@ -190,8 +191,8 @@ vector cross_prod(vector a, vector b) {
 }
 
 matrix rot(vector axis, double angle) {
-    // https://www.youmath.it/domande-a-risposte/view/6230-rotazione.html
-    if (axis.norm() == 0) {
+
+    if (axis.norm() == 0) { // if the angle is 0 the rot matrix should be the identity
         double a[] = {
             1, 0, 0,
             0, 1, 0,
@@ -201,7 +202,11 @@ matrix rot(vector axis, double angle) {
     }
 
     double s = 1. / sqrt(axis * axis);
-    axis = axis * s;
+    axis = axis * s;    // normalize the axis (redundant?)
+
+    // https://www.youmath.it/domande-a-risposte/view/6230-rotazione.html
+    // check the formula
+
     double a[] = {
         pow(axis[0],2)+(1-pow(axis[0],2))*cos(angle), (1-cos(angle))*axis[0]*axis[1]-sin(angle)*axis[2], (1-cos(angle))*axis[0]*axis[2]+sin(angle)*axis[1],
         (1-cos(angle))*axis[0]*axis[1]+sin(angle)*axis[3], pow(axis[1],2)+(1-pow(axis[1],2))*cos(angle), (1-cos(angle))*axis[1]*axis[2]-sin(angle)*axis[0],

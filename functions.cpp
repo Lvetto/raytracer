@@ -79,13 +79,15 @@ vector surface::operator()(double a, double b) {
     return m_pos + m_v1 * a + m_v2 * b;
 }
 
-vector intersect(ray a, ray b) {
-    vector v3 = cross_prod(a.m_vers, b.m_vers);
+vector intersect(ray a, ray b) {    // computes the intersection between two rays (assumes they are coplanar)
+    vector v3 = cross_prod(a.m_vers, b.m_vers); // any vector not parallel to a and b would work
+
+    // the intersection is computed by solving a linear system, see pdf
     double ma[] = {
         a.m_vers[0], -b.m_vers[0], v3[0],
         a.m_vers[1], -b.m_vers[1], v3[1],
         a.m_vers[2], -b.m_vers[2], v3[2]
     };
     matrix m(3, ma);
-    return a((m.inverse() * (b.m_pos + a.m_pos * -1 + v3))[0]);
+    return a((m.inverse() * (b.m_pos + a.m_pos * -1 + v3))[0]); // Should it be -v3? 
 }

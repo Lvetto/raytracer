@@ -9,7 +9,7 @@ double global_to_lcoord(vector point, ray a) {  // transform global coordinate t
     return (point + a.m_pos * -1)[0] / a.m_vers[0];
 }
 
-vector collide(ray a, surface b) {  // compute ray-surfafe intersection (coordinates in ray and surface reference frame)
+vector collide(ray a, surface b) {  // compute ray-surface intersection (coordinates in ray and surface reference frame)
     double ma[] = {
         a.m_vers[0], -b.m_v1[0], -b.m_v2[0],
         a.m_vers[1], -b.m_v1[1], -b.m_v2[1],
@@ -27,11 +27,11 @@ vector collide(ray a, surface b) {  // compute ray-surfafe intersection (coordin
     t = m * (b.m_pos + (a.m_pos * -1)); // solve linear system (ray coord, surf coord 1, surf coord 2)
 
     // check if point is in triangle
-    vector p = a(t[0]);
-    vector p0 = b.m_pos;
-    vector r = p + p0 * -1;
-    vector v3 = b.m_v1 + b.m_v2 * -1;
-    ray test_line(p, r);    ray tri_side(p0 + b.m_v2, v3);
+    vector p = a(t[0]);     // ray-plane intersection in global coords
+    vector p0 = b.m_pos;    // base position (intersection between two sides of the triangle)
+    vector r = p + p0 * -1; // vector pointing from p to p0
+    vector v3 = b.m_v1 + b.m_v2 * -1; // third side of the triangle
+    ray test_line(p, r);    ray tri_side(p0 + b.m_v2, v3);  // define rays from vectors
     vector p1 = intersect(test_line, tri_side); // cast a ray passing for the intersection of surf.v1 and surf.v2. find the intersection with <v3>
     if (global_to_lcoord(p1, tri_side) >= 0 and global_to_lcoord(p1, tri_side) <= 1 ) { // check if ray intersects the side of the triangle, not just its extension
         if ((global_to_lcoord(p1, test_line) >= 0))    // if the coordinate is positive the point is in the triangle
@@ -64,21 +64,22 @@ class camera {
 
                 ray r(m_pos, (pix_pos + m_pos * -1) * (1 / (pix_pos + m_pos * -1).norm()));
 
-                for (int bounce=0; bounce < max_bounces; bounce++) {
+                for (int bounce=0; bounce < max_bounces; bounce++) {    // repeat untill light source is found or bounce limit met
                     double min_dist = -1;
                     int bounce_ind = -1;
-                    for (int i=0; i<surf_count; i++) {
+                    for (int i=0; i<surf_count; i++) {  // loop trough surfaces
+
                         vector coll_point = collide(r, surf_arr[i]);
 
                         if (isnan(coll_point[0]))    // if there is no collision, skip this surface
                             continue;
 
-                        double dist = global_to_lcoord(coll_point, r);   // the distance covered by the ray is the coordinate of the collision with respect to itself
+                        double dist = global_to_lcoord(coll_point, r);   // the distance covered by the ray is the coordinate of the collision with respect to the ray itself
 
-                        if (dist <0)
+                        if (dist <= 0)    // dist < 0 means the surface is behind the origin point of the ray. dist = 0 means the ray already hit the surface
                             continue;
 
-                        if (dist < min_dist or min_dist < 0) {
+                        if (dist < min_dist or min_dist < 0) {  // the first surface hit is the one with minimum (positive) distance along the ray
                             min_dist = dist;
                             bounce_ind = i;
                         }
@@ -86,7 +87,7 @@ class camera {
 
                     vector new_pos = r(min_dist);   // the new ray starts at the (first) collision point'
 
-                    if (surf_arr[bounce_ind].m_is_light) {
+                    if (surf_arr[bounce_ind].m_is_light) {  // if the surface is a light source, the pixel should be lit
                         // write pixel to surface and break
                         write_pixel(output, ix, iy, 100, 100, 100, 100);
                         break;
